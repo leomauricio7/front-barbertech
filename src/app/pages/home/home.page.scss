@@ -1,0 +1,36 @@
+.navbar .btn {
+  border-radius: 20px;
+  border-color: #fff;
+  color: #fff;
+}
+
+.search-input {
+  background-color: #f0f0f0; /* Cinza claro */
+  border: 1px solid #ccc; /* Bordas finas */
+  color: #333; /* Texto em cinza escuro */
+}
+
+/* Define uma cor cinza clara para o botão de lupa */
+.search-btn {
+  background-color: #f0f0f0; /* Mesma cor cinza claro */
+  border: 1px solid #ccc; /* Bordas finas */
+  color: #333; /* Cor do ícone */
+}
+
+/* Remover bordas entre input e botão para uma transição suave */
+.search-input:focus, .search-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.barber-card {
+  background-color: #f7f7f7; /* Fundo cinza claro */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.barber-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* Logo circular */
+}
