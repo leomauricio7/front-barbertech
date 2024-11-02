@@ -42,24 +42,31 @@
   border-radius: 50%; /* Logo circular */
 }
 
-.card-barber{
+.card-barber {
   display: flex;
   flex-direction: row;
   gap: 10px;
   justify-content: center;
   align-items: center;
-  :last-child{
+  :last-child {
     line-height: 5px;
   }
 }
 
-.card-details{
+.card-details {
   margin-right: 20px;
 }
 
-
-.card-detail{
+.card-detail {
   margin-top: 0px;
-    margin-bottom: 30px;
-    border: none;
+  margin-bottom: 30px;
+  border: none;
+}
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  select {
+    width: 30%;
+  }
 }
