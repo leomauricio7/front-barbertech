@@ -1,0 +1,94 @@
+<div class="modal fade show" [ngClass]="{ 'd-block': barber?.id }" id="modalScheduling"
+  aria-labelledby="modalSchedulingLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered mw-300">
+    <div class="modal-content">
+      <div class="modal-header colorDefault">
+        <h5 class="modal-title text-center color-white" id="modalSchedulingLabel" [innerText]="barber?.name"></h5>
+        <button type="button" class="btn color-white" aria-label="Close" (click)="onClose()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="title" [innerText]="title"></p>
+        <!-- lista de serviços-->
+        <div class="row modal-list" *ngIf="!serviceSelected">
+          <div class="col-12 card-barber" *ngFor="let service of services">
+            <div class="card-info">
+              <img [src]="barber.logo" alt="Logo da Barbearia" class="barber-logo mb-2">
+              <div>
+                <h6 [innerText]="service.name"></h6>
+                <p class="price" [innerText]="service.price"></p>
+              </div>
+            </div>
+            <div class="action">
+              <button class="btn btn-primary btn-md" (click)="schedule(service)">Agendar</button>
+            </div>
+          </div>
+        </div>
+        <!-- lista de horarios-->
+        <div class="row" *ngIf="serviceSelected">
+          <div class="col-1 chevron">
+            <i class="bi bi-chevron-left" (click)="scrollLeft(scrollContainer)"></i>
+          </div>
+          <div class="col card-scroll" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"
+            (mousemove)="onMouseMove($event)" #scrollContainer>
+
+            <div class="card-day" *ngFor="let day of days;" [ngClass]="{'active': daySelected === day}"
+              (click)="setDay(day)">
+              <h6 [innerText]="day.name"></h6>
+              <p [innerText]="day.day+'/'+day.month"></p>
+            </div>
+          </div>
+          <div class="col-1 chevron">
+            <i class="bi bi-chevron-right" (click)="scrollRight(scrollContainer)"></i>
+          </div>
+        </div>
+
+
+        <!-- lista de profissionais-->
+        <p class="title mt-20" *ngIf="daySelected">Selecione um profissional</p>
+        <div class="row" *ngIf="daySelected">
+          <div class="col-1 chevron">
+            <i class="bi bi-chevron-left" (click)="scrollLeft(scrollContainer)"></i>
+          </div>
+          <div class="col card-scroll" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"
+            (mousemove)="onMouseMove($event)" #scrollContainer>
+
+            <div class="card-person" *ngFor="let person of persons;" [ngClass]="{'active': personSelected === person}"
+              (click)="setPerson(person)">
+              <img src="assets/images/barber.png" alt="barbeiro">
+              <h6 [innerText]="person.name"></h6>
+            </div>
+          </div>
+          <div class="col-1 chevron">
+            <i class="bi bi-chevron-right" (click)="scrollRight(scrollContainer)"></i>
+          </div>
+        </div>
+
+        <!-- lista de horarios-->
+        <p class="title mt-20" *ngIf="personSelected">Selecione um horário disponivel</p>
+        <div class="row" *ngIf="personSelected">
+          <div class="col-1 chevron">
+            <i class="bi bi-chevron-left" (click)="scrollLeft(scrollContainer)"></i>
+          </div>
+          <div class="col card-scroll" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"
+            (mousemove)="onMouseMove($event)" #scrollContainer>
+
+            <div class="card-person" *ngFor="let time of times;" [ngClass]="{'active': timeSelected === time}"
+              (click)="setTime(time)">
+              <h6 [innerText]="time.time"></h6>
+            </div>
+          </div>
+          <div class="col-1 chevron">
+            <i class="bi bi-chevron-right" (click)="scrollRight(scrollContainer)"></i>
+          </div>
+        </div>
+        <div class="d-grid gap-2 col-12 mx-auto mt-20"*ngIf="serviceSelected && daySelected && personSelected && timeSelected">
+          <button type="submit" class="btn btn-lg btn-primary">Confirmar Agendamento</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

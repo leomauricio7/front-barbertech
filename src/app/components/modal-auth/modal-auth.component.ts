@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-modal-login',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss'],
+  selector: 'app-modal-auth',
+  templateUrl: './modal-auth.component.html',
+  styleUrls: ['./modal-auth.component.scss'],
 })
-export class ModalComponent {
+export class ModalAuthComponent {
   public signup: boolean = false;
   public recovery: boolean = false;
 
