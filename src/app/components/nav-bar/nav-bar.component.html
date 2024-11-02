@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg bg-dark colorDefault">
-  <div class="container-fluid">
+<nav class="navbar navbar-expand-lg colorDefault">
+  <div class="container">
     <img src="" alt="">
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -13,67 +13,20 @@
           <a class="nav-link" routerLink="/home">Início</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/home">Buscar</a>
+          <a class="nav-link" routerLink="/search">Buscar</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/agendamentos">Meus Agendamentos</a>
+          <a class="nav-link" routerLink="/scheduling">Meus Agendamentos</a>
         </li>
       </ul>
       <!-- Botão para abrir o modal -->
       <button class="btn btn-primary btn-rounded btn-icon" data-bs-toggle="modal" data-bs-target="#loginModal"
         role="button">
-        <i class="fas fa-user"></i> Login
+        <i class="fas fa-user"></i> Entrar
       </button>
 
       <!-- Modal de login/sing-up -->
-      <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered mw-300">
-          <div class="modal-content">
-            <div class="modal-header colorDefault">
-              <h5 class="modal-title" id="loginModalLabel" [innerText]="signup ? 'Cadastro' : 'Login'"></h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-              <div *ngIf="isMessage" class="alert alert-{{color}}" role="alert" [innerText]="message"></div>
-
-
-              <form *ngIf="!signup" (ngSubmit)="auth()">
-                <div class="mb-3">
-                  <label class="form-label">Email</label>
-                  <input type="email" class="form-control"  name="email" required>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Senha</label>
-                  <input type="password"  class="form-control" name="senha" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Entrar</button>
-                <hr />
-                <p>Não possui cadastro? <a href="#" (click)="isSignup()"> cadastre-se- aqui!</a></p>
-              </form>
-
-              <form *ngIf="signup"  (ngSubmit)="register()">
-                <div class="mb-3">
-                  <label class="form-label">Nome</label>
-                  <input type="text" class="form-control"  name="name" placeholder="Informe seu login" required>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Email</label>
-                  <input type="email" class="form-control" name="email" placeholder="Informe seu email" required>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Senha</label>
-                  <input type="password" class="form-control" name="senha" placeholder="Informe sua senha" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
-                <hr />
-                <p>Possui cadastro? <a href="#" (click)="isSignup()"> realize o login aqui!</a></p>
-              </form>
-            </div>
-
-          </div>
-        </div>
-      </div>
+      <app-modal-login></app-modal-login>
 
     </div>
   </div>

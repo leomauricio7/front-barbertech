@@ -1,0 +1,65 @@
+.navbar .btn {
+  border-radius: 20px;
+  border-color: #fff;
+  color: #fff;
+}
+
+.search-input {
+  background-color: #f0f0f0; /* Cinza claro */
+  border: 1px solid #ccc; /* Bordas finas */
+  color: #333; /* Texto em cinza escuro */
+}
+
+/* Define uma cor cinza clara para o botão de lupa */
+.search-btn {
+  background-color: #f0f0f0; /* Mesma cor cinza claro */
+  border: 1px solid #ccc; /* Bordas finas */
+  color: #333; /* Cor do ícone */
+}
+
+/* Remover bordas entre input e botão para uma transição suave */
+.search-input:focus,
+.search-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.barber-card {
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.barber-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* Logo circular */
+}
+
+.card-barber{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  :last-child{
+    line-height: 5px;
+  }
+}
+
+.card-details{
+  margin-right: 20px;
+}
+
+
+.card-detail{
+  margin-top: 0px;
+    margin-bottom: 30px;
+    border: none;
+}

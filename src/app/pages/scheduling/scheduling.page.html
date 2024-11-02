@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <h5>Meus Agendamentos</h5>
+</div>
+
+<div class="container mt-4">
+  <div class="row">
+    <ng-container *ngFor="let sc of schedulings; let i = index">
+
+      <div class="col-12 barber-card" (click)="toggleCollapse(sc.id)" [attr.data-bs-target]="'#card-' + i"
+        aria-expanded="false" [attr.aria-controls]="'card-' + i">
+        <div class="p-3 card-barber">
+          <div>
+            <img [src]="sc.logo" alt="Logo da Barbearia" class="barber-logo mb-2">
+          </div>
+          <div>
+            <h6 [innerText]="sc.name"></h6>
+            <p class="text-muted" [innerText]="sc.address"></p>
+            <p><i class="fas fa-map-marker-alt text-danger"></i> {{sc.distance}}</p>
+          </div>
+
+        </div>
+        <div class="p-3 card-details">
+          <h6> <i class="bi bi-calendar-date"></i> {{sc.date}}</h6>
+          <h6> <i class="bi bi-clock-history"></i> {{sc.time}}</h6>
+        </div>
+      </div>
+      <div class="collapse" [id]="'card-' + i" [class.show]="collapsedStates[sc.id]">
+        <div class="card card-body card-detail">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Barbearia</th>
+                <th scope="col">Serviço</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row" [innerText]="i+1"></th>
+                <td [innerText]="sc.name"></td>
+                <td [innerText]="sc.service"></td>
+                <td [innerText]="sc.price"></td>
+                <td [innerText]="sc.status"></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+
+
+
+
+
+  </div>
+</div>

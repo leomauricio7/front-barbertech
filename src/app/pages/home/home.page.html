@@ -2,7 +2,7 @@
   <form class="d-flex mt-4" role="search">
     <div class="input-group">
       <button class="btn search-btn" type="submit">
-        <i class="fas fa-search"></i> <!-- Ícone de lupa -->
+        <i class="fas fa-search"></i>
       </button>
       <input class="form-control search-input" type="search" placeholder="Encontre um estabelecimento"
         aria-label="Buscar">
@@ -14,69 +14,15 @@
 </div>
 <div class="container mt-4">
   <div class="row">
-    <div class="col-md-3 mb-4">
+
+    <div class="col-md-3 mb-4" *ngFor="let barber of barbers">
       <div class="barber-card p-3 text-center">
-        <img src="logoBarbearia.png" alt="Logo da Barbearia" class="barber-logo mb-2">
-        <h6>Barbearia Dom Renato</h6>
-        <p class="text-muted">Rua A5, Natal - RN</p>
-        <p><i class="fas fa-map-marker-alt text-danger"></i> 31,21Km</p>
+        <img [src]="barber.logo" alt="Logo da Barbearia" class="barber-logo mb-2">
+        <h6 [innerText]="barber.name"></h6>
+        <p class="text-muted" [innerText]="barber.address"></p>
+        <p><i class="fas fa-map-marker-alt text-danger"></i> {{barber.distance}}</p>
       </div>
     </div>
-    <div class="col-md-3 mb-4">
-      <div class="barber-card p-3 text-center">
-        <img src="logoBarbearia.png" alt="Logo da Barbearia" class="barber-logo mb-2">
-        <h6>Barbearia Dom Renato</h6>
-        <p class="text-muted">Rua A5, Natal - RN</p>
-        <p><i class="fas fa-map-marker-alt text-danger"></i> 31,21Km</p>
-      </div>
-    </div>
-    <div class="col-md-3 mb-4">
-      <div class="barber-card p-3 text-center">
-        <img src="logoBarbearia.png" alt="Logo da Barbearia" class="barber-logo mb-2">
-        <h6>Barbearia Dom Renato</h6>
-        <p class="text-muted">Rua A5, Natal - RN</p>
-        <p><i class="fas fa-map-marker-alt text-danger"></i> 31,21Km</p>
-      </div>
-    </div>
-    <div class="col-md-3 mb-4">
-      <div class="barber-card p-3 text-center">
-        <img src="logoBarbearia.png" alt="Logo da Barbearia" class="barber-logo mb-2">
-        <h6>Barbearia Dom Renato</h6>
-        <p class="text-muted">Rua A5, Natal - RN</p>
-        <p><i class="fas fa-map-marker-alt text-danger"></i> 31,21Km</p>
-      </div>
-    </div>
-    <div class="col-md-3 mb-4">
-      <div class="barber-card p-3 text-center">
-        <img src="logoBarbearia.png" alt="Logo da Barbearia" class="barber-logo mb-2">
-        <h6>Barbearia Dom Renato</h6>
-        <p class="text-muted">Rua A5, Natal - RN</p>
-        <p><i class="fas fa-map-marker-alt text-danger"></i> 31,21Km</p>
-      </div>
-    </div>
-    <div class="col-md-3 mb-4">
-      <div class="barber-card p-3 text-center">
-        <img src="logoBarbearia.png" alt="Logo da Barbearia" class="barber-logo mb-2">
-        <h6>Barbearia Dom Renato</h6>
-        <p class="text-muted">Rua A5, Natal - RN</p>
-        <p><i class="fas fa-map-marker-alt text-danger"></i> 31,21Km</p>
-      </div>
-    </div>
-    <div class="col-md-3 mb-4">
-      <div class="barber-card p-3 text-center">
-        <img src="logoBarbearia.png" alt="Logo da Barbearia" class="barber-logo mb-2">
-        <h6>Barbearia Dom Renato</h6>
-        <p class="text-muted">Rua A5, Natal - RN</p>
-        <p><i class="fas fa-map-marker-alt text-danger"></i> 31,21Km</p>
-      </div>
-    </div>
-    <div class="col-md-3 mb-4">
-      <div class="barber-card p-3 text-center">
-        <img src="logoBarbearia.png" alt="Logo da Barbearia" class="barber-logo mb-2">
-        <h6>Barbearia Dom Renato</h6>
-        <p class="text-muted">Rua A5, Natal - RN</p>
-        <p><i class="fas fa-map-marker-alt text-danger"></i> 31,21Km</p>
-      </div>
-    </div>
+
   </div>
 </div>

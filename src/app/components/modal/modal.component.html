@@ -1,0 +1,122 @@
+<div class="modal fade" id="loginModal" aria-labelledby="loginModalLabel" data-bs-backdrop="static"
+  data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered mw-300">
+    <div class="modal-content">
+      <div class="modal-header colorDefault">
+
+        <h5 class="modal-title text-center color-white" id="loginModalLabel"
+          [innerText]="(signup && !recovery ? 'Cadastro' : !signup && recovery ? 'Recuperar Senha': 'Acessar Conta')">
+        </h5>
+
+        <button type="button" class="btn color-white" data-bs-dismiss="modal" aria-label="Close">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div *ngIf="isMessage" class="alert alert-{{color}}" role="alert" [innerText]="message"></div>
+
+
+        <form *ngIf="!signup && !recovery" (ngSubmit)="auth()">
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">
+                <i class="bi bi-person"></i>
+              </span>
+              <input class="form-control form-control-lg" type="email" name="email" placeholder="Informe seu email"
+                aria-label="Login">
+            </div>
+          </div>
+
+          <!-- Senha -->
+          <div class="mb-3">
+            <label class="form-label">Senha</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">
+                <i class="bi bi-lock"></i>
+              </span>
+              <input type="password" class="form-control form-control-lg" name="senha" placeholder="Informe sua senha"
+                required>
+            </div>
+          </div>
+
+          <p class="password-recovery color-default"><a (click)="isRecovery()"> Esqueci minha senha</a></p>
+          <!-- BTN Entar-->
+          <div class="d-grid gap-2 col-12 mx-auto">
+            <button type="submit" class="btn btn-lg btn-primary">Entrar</button>
+          </div>
+
+          <p class="newRegister">Não possui cadastro? <a (click)="isSignup()"> cadastre-se- aqui!</a></p>
+        </form>
+
+        <form *ngIf="signup && !recovery" (ngSubmit)="register()">
+          <div class="mb-3">
+            <label class="form-label">Nome</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">
+                <i class="bi bi-person"></i>
+              </span>
+              <input class="form-control form-control-lg" type="text" name="name" placeholder="Nome e Sobrenome"
+                aria-label="nome">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">
+                <i class="bi bi-envelope"></i>
+              </span>
+              <input type="email" class="form-control form-control-lg" name="email" placeholder="Informe seu email"
+                required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Telefone</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">
+                <i class="bi bi-phone"></i>
+              </span>
+              <input type="email" class="form-control form-control-lg" name="phone" placeholder="Informe seu telefone"
+                required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Senha</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">
+                <i class="bi bi-lock"></i>
+              </span>
+              <input type="password" class="form-control form-control-lg" name="senha" placeholder="Informe sua senha"
+                required>
+            </div>
+          </div>
+          <div class="d-grid gap-2 col-12 mx-auto">
+            <button type="submit" class="btn btn-lg btn-primary">Cadastrar</button>
+          </div>
+          <p class="newRegister">Possui cadastro? <a (click)="isSignin()"> realize o login aqui!</a></p>
+        </form>
+
+        <form *ngIf="recovery" (ngSubmit)="recoveryPassword()">
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">
+                <i class="bi bi-envelope"></i>
+              </span>
+              <input type="email" class="form-control form-control-lg" name="email" placeholder="Informe seu email"
+                required>
+            </div>
+          </div>
+          <div class="d-grid gap-2 col-12 mx-auto">
+            <button type="submit" class="btn btn-lg btn-primary">Recuperar</button>
+          </div>
+          <p class="newRegister">Possui cadastro? <a (click)="isSignin()"> realize o login aqui!</a></p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
