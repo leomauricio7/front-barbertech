@@ -1,5 +1,22 @@
 .footer{
   position: absolute;
-  //bottom: 0px;
+  bottom: 0px;
   width: 100%;
+}
+
+.info-company{
+  img{
+    width: 30px;
+    margin-right: 10px;
+  }
+}
+
+.row{
+  justify-content:space-between ;
+  align-items: center;
+  width: 100%;
+}
+
+.text-right{
+  text-align: right;
 }
