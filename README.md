@@ -7,6 +7,7 @@ Para rodar o front local, instale as libs `npm i`, rode o app com o comando `ng 
 O serviço fica rodando nessa url: `http://localhost:4200/`.
 
 ## Publicar no GitHub Pages 
+Instale a Lib `npm install -g angular-cli-ghpages`.
 Rode o comando `npm run build:github` e depois `npm run deploy:github`
 Assim ficará disponivel no Github Pages.
 
