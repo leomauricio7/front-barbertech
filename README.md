@@ -1,10 +1,15 @@
-# FrontNewA3
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+# Front BarberTech
+Projeto desenvolvido com angular 16.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Para rodar o front local, instale as libs `npm i`, rode o app com o comando `ng serve`.
+O serviço fica rodando nessa url: `http://localhost:4200/`.
+
+## Publicar no GitHub Pages 
+Rode o comando `npm run build:github` e depois `npm run deploy:github`
+Assim ficará disponivel no Github Pages.
+
 
 ## Code scaffolding
 
@@ -25,6 +30,3 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-# front-barbertech
-# front-barbertech
-# front-barbertech
