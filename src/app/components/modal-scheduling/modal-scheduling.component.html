@@ -9,85 +9,151 @@
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
-      <div class="modal-body">
-        <p class="title" [innerText]="title"></p>
-        <!-- lista de serviços-->
-        <div class="row modal-list" *ngIf="!serviceSelected">
-          <div class="col-12 card-barber" *ngFor="let service of services">
-            <div class="card-info">
-              <img [src]="barber.logo" alt="Logo da Barbearia" class="barber-logo mb-2">
-              <div>
-                <h6 [innerText]="service.name"></h6>
-                <p class="price" [innerText]="service.price"></p>
+      <div class="modal-body" *ngIf="!auth">
+        <div class="alert alert-primary d-flex align-items-center alert-custom"
+        role="alert">
+        <div>
+          <i class="bi bi-exclamation-square-fill"></i> Necessario realizar o login para continuar.
+        </div>
+      </div>
+      </div>
+      <div class="modal-body" *ngIf="auth">
+        <ng-container *ngIf="isSubmitForm">
+          <div class="d-flex align-items-center" *ngIf="isLoad">
+            <strong role="status">Criando seu agendamento...</strong>
+            <div class="spinner-border ms-auto text-primary" aria-hidden="true"></div>
+          </div>
+        </ng-container>
+
+        <div class="alert alert-primary" role="alert" *ngIf="isSuccesScheduling">
+          <h4 class="alert-heading">Atenção!</h4>
+          <p>Agendamento realizado com sucesso.</p>
+          <hr>
+          <p class="mb-0">Para visualizar os agendamentos, clique na aba de meus agendamentos.</p>
+        </div>
+
+        <ng-container *ngIf="!isSubmitForm && !isSuccesScheduling">
+          <p class="title" [innerText]="title"></p>
+          <!-- lista de serviços-->
+          <div class="row modal-list" *ngIf="!serviceSelected">
+
+            <div class="d-flex justify-content-center" *ngIf="isLoad">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
               </div>
             </div>
-            <div class="action">
-              <button class="btn btn-primary btn-md" (click)="schedule(service)">Agendar</button>
+
+            <div *ngIf="!isLoad && services?.length === 0" class="alert alert-warning d-flex align-items-center alert-custom"
+              role="alert">
+              <div>
+                <i class="bi bi-exclamation-square-fill"></i> Barbearia não possui serviços cadastrados.
+              </div>
+            </div>
+
+            <div class="col-12 card-barber" *ngFor="let service of services">
+              <div class="card-info">
+                <img src="assets/images/logo.png" alt="Logo da Barbearia" class="barber-logo mb-2">
+                <div>
+                  <h6 [innerText]="service.name"></h6>
+                  <p class="price" [innerText]="service.price | currency:'BRL':'symbol':'1.2-2'"></p>
+                </div>
+              </div>
+              <div class="action">
+                <button class="btn btn-primary btn-md" (click)="schedule(service)">Agendar</button>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- lista de horarios-->
-        <div class="row" *ngIf="serviceSelected">
-          <div class="col-1 chevron">
-            <i class="bi bi-chevron-left" (click)="scrollLeft(scrollContainer)"></i>
-          </div>
-          <div class="col card-scroll" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"
-            (mousemove)="onMouseMove($event)" #scrollContainer>
+          <!-- lista de horarios-->
+          <div class="row" *ngIf="serviceSelected">
+            <div class="col-1 chevron">
+              <i class="bi bi-chevron-left" (click)="scrollLeft(scrollContainer)"></i>
+            </div>
+            <div class="col card-scroll" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"
+              (mousemove)="onMouseMove($event)" #scrollContainer>
 
-            <div class="card-day" *ngFor="let day of days;" [ngClass]="{'active': daySelected === day}"
-              (click)="setDay(day)">
-              <h6 [innerText]="day.name"></h6>
-              <p [innerText]="day.day+'/'+day.month"></p>
+              <div class="card-day" *ngFor="let day of days;" [ngClass]="{'active': daySelected === day}"
+                (click)="setDay(day)">
+                <h6 [innerText]="day.name"></h6>
+                <p [innerText]="day.day+'/'+day.month"></p>
+              </div>
+            </div>
+            <div class="col-1 chevron">
+              <i class="bi bi-chevron-right" (click)="scrollRight(scrollContainer)"></i>
             </div>
           </div>
-          <div class="col-1 chevron">
-            <i class="bi bi-chevron-right" (click)="scrollRight(scrollContainer)"></i>
-          </div>
-        </div>
+          <!-- lista de profissionais-->
+          <p class="title mt-20" *ngIf="daySelected && !isLoad && (persons && persons.length > 0)">Selecione um
+            profissional</p>
+          <div class="row" *ngIf="daySelected">
 
-
-        <!-- lista de profissionais-->
-        <p class="title mt-20" *ngIf="daySelected">Selecione um profissional</p>
-        <div class="row" *ngIf="daySelected">
-          <div class="col-1 chevron">
-            <i class="bi bi-chevron-left" (click)="scrollLeft(scrollContainer)"></i>
-          </div>
-          <div class="col card-scroll" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"
-            (mousemove)="onMouseMove($event)" #scrollContainer>
-
-            <div class="card-person" *ngFor="let person of persons;" [ngClass]="{'active': personSelected === person}"
-              (click)="setPerson(person)">
-              <img src="assets/images/barber.png" alt="barbeiro">
-              <h6 [innerText]="person.name"></h6>
+            <div class="d-flex justify-content-center" *ngIf="isLoad">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </div>
-          </div>
-          <div class="col-1 chevron">
-            <i class="bi bi-chevron-right" (click)="scrollRight(scrollContainer)"></i>
-          </div>
-        </div>
 
-        <!-- lista de horarios-->
-        <p class="title mt-20" *ngIf="personSelected">Selecione um horário disponivel</p>
-        <div class="row" *ngIf="personSelected">
-          <div class="col-1 chevron">
-            <i class="bi bi-chevron-left" (click)="scrollLeft(scrollContainer)"></i>
-          </div>
-          <div class="col card-scroll" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"
-            (mousemove)="onMouseMove($event)" #scrollContainer>
-
-            <div class="card-person" *ngFor="let time of times;" [ngClass]="{'active': timeSelected === time}"
-              (click)="setTime(time)">
-              <h6 [innerText]="time.time"></h6>
+            <div *ngIf="!isLoad && persons?.length === 0"
+              class="alert alert-warning d-flex align-items-center alert-custom" role="alert">
+              <div>
+                <i class="bi bi-exclamation-square-fill"></i> Barbearia não possui barbeiros cadastrados para esse
+                serviço.
+              </div>
             </div>
-          </div>
-          <div class="col-1 chevron">
-            <i class="bi bi-chevron-right" (click)="scrollRight(scrollContainer)"></i>
-          </div>
-        </div>
-        <div class="d-grid gap-2 col-12 mx-auto mt-20"*ngIf="serviceSelected && daySelected && personSelected && timeSelected">
-          <button type="submit" class="btn btn-lg btn-primary">Confirmar Agendamento</button>
-        </div>
 
+            <ng-container>
+              <div class="col-1 chevron">
+                <i class="bi bi-chevron-left" (click)="scrollLeft(scrollContainer)"></i>
+              </div>
+              <div class="col card-scroll" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"
+                (mousemove)="onMouseMove($event)" #scrollContainer>
+
+                <div class="card-person" *ngFor="let person of persons;"
+                  [ngClass]="{'active': personSelected === person}" (click)="setPerson(person)">
+                  <img src="assets/images/barber.png" alt="barbeiro">
+                  <h6 [innerText]="person.name"></h6>
+                </div>
+              </div>
+              <div class="col-1 chevron">
+                <i class="bi bi-chevron-right" (click)="scrollRight(scrollContainer)"></i>
+              </div>
+            </ng-container>
+          </div>
+          <!-- lista de horarios-->
+          <p class="title mt-20" *ngIf="personSelected && !isLoad && (times && times.length > 0)">Selecione um horário
+            disponivel</p>
+          <div class="row" *ngIf="personSelected">
+
+
+            <div *ngIf="!isLoad && times?.length === 0"
+              class="alert alert-warning d-flex align-items-center alert-custom" role="alert">
+              <div>
+                <i class="bi bi-exclamation-square-fill"></i> Barbeiro sem horarios disponiveis.
+              </div>
+            </div>
+
+            <ng-container *ngIf="personSelected && !isLoad && (times && times.length > 0)">
+              <div class="col-1 chevron">
+                <i class="bi bi-chevron-left" (click)="scrollLeft(scrollContainer)"></i>
+              </div>
+              <div class="col card-scroll" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"
+                (mousemove)="onMouseMove($event)" #scrollContainer>
+
+                <div class="card-person" *ngFor="let time of times;" [ngClass]="{'active': timeSelected === time}"
+                  (click)="setTime(time)">
+                  <h6 [innerText]="time"></h6>
+                </div>
+              </div>
+              <div class="col-1 chevron">
+                <i class="bi bi-chevron-right" (click)="scrollRight(scrollContainer)"></i>
+              </div>
+            </ng-container>
+          </div>
+          <div class="d-grid gap-2 col-12 mx-auto mt-20"
+            *ngIf="serviceSelected && daySelected && personSelected && timeSelected">
+            <button type="submit" class="btn btn-lg btn-primary" (click)="submitScheduling()">Confirmar
+              Agendamento</button>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

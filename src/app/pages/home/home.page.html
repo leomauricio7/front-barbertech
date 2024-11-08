@@ -4,8 +4,8 @@
       <button class="btn search-btn" type="submit">
         <i class="fas fa-search"></i>
       </button>
-      <input class="form-control search-input" type="search" placeholder="Encontre um estabelecimento"
-        aria-label="Buscar">
+      <input [(ngModel)]="searchQuery" (input)="onSearchInput()" class="form-control search-input" type="search"
+        placeholder="Encontre um estabelecimento" name="search" aria-label="Buscar">
     </div>
   </form>
 </div>
@@ -15,12 +15,18 @@
 <div class="container mt-4">
   <div class="row">
 
+    <div class="d-flex justify-content-center" *ngIf="isLoad">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Buscando barbearias proximas de você...</span>
+      </div>
+    </div>
+
     <div class="col-md-3 mb-4" *ngFor="let barber of barbers">
       <div class="barber-card p-3 text-center" (click)="openModal(barber)">
-        <img [src]="barber.logo" alt="Logo da Barbearia" class="barber-logo mb-2">
+        <img src="assets/images/logo.png" alt="Logo da Barbearia" class="barber-logo mb-2">
         <h6 [innerText]="barber.name"></h6>
-        <p class="text-muted" [innerText]="barber.address"></p>
-        <p><i class="fas fa-map-marker-alt text-danger"></i> {{barber.distance}}</p>
+        <p class="text-muted" [innerText]="barber.address.street+' '+barber.address.city+'/'+barber.address.state"></p>
+        <p><i class="fas fa-map-marker-alt text-danger"></i> 0 - km</p>
       </div>
     </div>
 

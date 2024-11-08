@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { SharedComponentModule } from '../modules/components.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PagesModule } from '../modules/pages.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { PagesModule } from '../modules/pages.module';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     SharedComponentModule,
     PagesModule,
   ],

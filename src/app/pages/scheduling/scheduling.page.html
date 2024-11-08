@@ -9,26 +9,32 @@
   </select>
 </div>
 
-<div class="container mt-4">
+<div class="container mt-4 scheduling">
   <div class="row">
+    <div class="d-flex justify-content-center" *ngIf="isLoad">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Buscando seues agendamentos</span>
+      </div>
+    </div>
     <ng-container *ngFor="let sc of schedulings; let i = index">
 
       <div class="col-12 barber-card" (click)="toggleCollapse(sc.id)" [attr.data-bs-target]="'#card-' + i"
         aria-expanded="false" [attr.aria-controls]="'card-' + i">
         <div class="p-3 card-barber">
           <div>
-            <img [src]="sc.logo" alt="Logo da Barbearia" class="barber-logo mb-2">
+            <img src="assets/images/logoBarbearia.png" alt="Logo da Barbearia" class="barber-logo mb-2">
           </div>
           <div>
-            <h6 [innerText]="sc.name"></h6>
-            <p class="text-muted" [innerText]="sc.address"></p>
-            <p><i class="fas fa-map-marker-alt text-danger"></i> {{sc.distance}}</p>
+            <h6 [innerText]="sc.company.name"></h6>
+            <p class="text-muted"
+              [innerText]="sc.company.address.street+' '+sc.company.address.city+'/'+sc.company.address.state"></p>
+            <p><i class="fas fa-map-marker-alt text-danger"></i> 0 - KM</p>
           </div>
 
         </div>
         <div class="p-3 card-details">
           <h6> <i class="bi bi-calendar-date"></i> {{sc.date}}</h6>
-          <h6> <i class="bi bi-clock-history"></i> {{sc.time}}</h6>
+          <h6> <i class="bi bi-clock-history"></i> {{sc.date}}</h6>
         </div>
       </div>
       <div class="collapse" [id]="'card-' + i" [class.show]="collapsedStates[sc.id]">
@@ -46,9 +52,9 @@
             <tbody>
               <tr>
                 <th scope="row" [innerText]="i+1"></th>
-                <td [innerText]="sc.name"></td>
-                <td [innerText]="sc.service"></td>
-                <td [innerText]="sc.price"></td>
+                <td [innerText]="sc.company.name"></td>
+                <td [innerText]="sc.serviceEntity.name"></td>
+                <td [innerText]="sc.serviceEntity.price | currency:'BRL':'symbol':'1.2-2'"></td>
                 <td [innerText]="sc.status"></td>
               </tr>
 

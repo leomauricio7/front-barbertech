@@ -7,6 +7,11 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
+import { IBarber } from 'src/app/interfaces/barber.interface';
+import { ICompany } from 'src/app/interfaces/company.interface';
+import { IScheduling } from 'src/app/interfaces/scheduling.interface';
+import { IService } from 'src/app/interfaces/service.interface';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-modal-scheduling',
@@ -14,150 +19,40 @@ import {
   styleUrls: ['./modal-scheduling.component.scss'],
 })
 export class ModalSchedulingComponent implements OnInit, OnChanges {
-  @Input() barber: any | null = null;
+  @Input() barber: ICompany | null = null;
   @Output() close = new EventEmitter<void>();
 
-  public serviceSelected: any = null;
+  public isLoad: boolean = false;
+  public isSubmitForm: boolean = false;
+  public isSuccesScheduling: boolean = false;
+  public serviceSelected: IService | null = null;
   public daySelected: any = null;
-  public personSelected: any = null;
+  public personSelected: IBarber | null = null;
   public timeSelected: any = null;
-
   public title: string = 'Selecione um serviço';
-
-  public services = [
-    {
-      id: 1,
-      name: 'Corte Navalhado',
-      price: 'R$ 25.50',
-    },
-    {
-      id: 2,
-      name: 'Corte Militar',
-      price: 'R$ 20.50',
-    },
-    {
-      id: 3,
-      name: 'Corte Chanel',
-      price: 'R$ 15.50',
-    },
-    {
-      id: 4,
-      name: 'Barba',
-      price: 'R$ 45.50',
-    },
-  ];
-
-  public days = [
-    {
-      name: 'Seg',
-      day: 15,
-      month: 10,
-      year: 2024,
-    },
-    {
-      name: 'Ter',
-      day: 16,
-      month: 10,
-      year: 2024,
-    },
-    {
-      name: 'Qua',
-      day: 17,
-      month: 10,
-      year: 2024,
-    },
-    {
-      name: 'Qui',
-      day: 18,
-      month: 10,
-      year: 2024,
-    },
-    {
-      name: 'Sex',
-      day: 19,
-      month: 10,
-      year: 2024,
-    },
-    {
-      name: 'Sex',
-      day: 19,
-      month: 10,
-      year: 2024,
-    },
-    {
-      name: 'Sex',
-      day: 19,
-      month: 10,
-      year: 2024,
-    },
-    {
-      name: 'Sex',
-      day: 19,
-      month: 10,
-      year: 2024,
-    },
-    {
-      name: 'Sex',
-      day: 19,
-      month: 10,
-      year: 2024,
-    },
-  ];
-
-  public persons = [
-    {
-      id: 1,
-      name: 'Jose ielmo',
-    },
-    {
-      id: 2,
-      name: 'Caio Jose',
-    },
-    {
-      id: 2,
-      name: 'Caio Jose',
-    },
-    {
-      id: 2,
-      name: 'Caio Jose',
-    },
-    {
-      id: 2,
-      name: 'Caio Jose',
-    },
-    {
-      id: 2,
-      name: 'Caio Jose',
-    },
-    {
-      id: 2,
-      name: 'Caio Jose',
-    },
-  ];
-
-  public times = [
-    {
-      id: 1,
-      time: '08:00',
-    },
-    {
-      id: 2,
-      time: '08:30',
-    },
-
-    {
-      id: 3,
-      time: '11:30',
-    },
-  ];
+  public services!: IService[];
+  public days = this.generateDatesArray(15);
+  public persons!: IBarber[];
+  public times!: string[];
+  public auth: any;
 
   private isDragging = false;
   private startX: number = 0;
   private scrollLeftM: number = 0;
 
-  constructor() {}
+  constructor(private readonly apiService: ApiService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.barber) {
+      this.getServices(this.barber.id.toString());
+    }
+
+    const auth = localStorage.getItem('user_log_barber');
+    if (auth) {
+      this.auth = JSON.parse(auth);
+      console.log(this.auth);
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {}
 
@@ -165,17 +60,53 @@ export class ModalSchedulingComponent implements OnInit, OnChanges {
     this.close.emit();
   }
 
-  schedule(service: any) {
+  submitScheduling() {
+    if (this.barber && this.personSelected && this.serviceSelected) {
+      this.isSubmitForm = true;
+      this.isLoad = true;
+      const data: IScheduling = {
+        id: 0,
+        idBarber: this.personSelected.id,
+        idClient: this.auth.id,
+        idCompany: this.barber?.id,
+        idService: this.serviceSelected.id,
+        date: `${this.daySelected.year}-${this.daySelected.month}-${this.daySelected.day}T${this.timeSelected}:00`,
+        status: 'PENDENTE',
+      };
+      this.apiService.scheduling(data).subscribe({
+        next: (response) => (this.isSuccesScheduling = true),
+        error: (er) => console.error(er),
+        complete: () => ((this.isSubmitForm = false), (this.isLoad = false)),
+      });
+    }
+  }
+
+  schedule(service: IService) {
     this.serviceSelected = service;
     this.title = 'Selecione a data';
   }
 
   setDay(day: any) {
     this.daySelected = day;
+    if (this.barber && this.serviceSelected) {
+      this.getBarbers(
+        this.barber.id.toString(),
+        this.serviceSelected.id.toString()
+      );
+      this.persons = [];
+      this.personSelected = null;
+      this.times = [];
+      this.timeSelected = null;
+    }
   }
 
-  setPerson(person: any) {
+  setPerson(person: IBarber) {
+    this.personSelected = null;
     this.personSelected = person;
+    if (person && this.daySelected) {
+      const dateFormat = `${this.daySelected.year}-${this.daySelected.month}-${this.daySelected.day}`;
+      this.getBarbersTimesAvailability(person.id.toString(), dateFormat);
+    }
   }
 
   setTime(time: any) {
@@ -214,5 +145,54 @@ export class ModalSchedulingComponent implements OnInit, OnChanges {
   scrollRight(scrollContainer: HTMLElement) {
     const scrollAmount = 100; // Quantidade de rolagem em pixels
     scrollContainer.scrollLeft += scrollAmount; // Rola para a direita
+  }
+
+  private getServices(idCompany: string): void {
+    this.isLoad = true;
+    this.apiService.getServices(idCompany).subscribe({
+      next: (services: IService[]) => (this.services = services),
+      error: (er) => console.error(er),
+      complete: () => (this.isLoad = false),
+    });
+  }
+
+  private getBarbers(idCompany: string, idService: string): void {
+    this.isLoad = true;
+    this.apiService.getBarbers(idCompany, idService).subscribe({
+      next: (barbers: IBarber[]) => (this.persons = barbers),
+      error: (er) => console.error(er),
+      complete: () => (this.isLoad = false),
+    });
+  }
+
+  private getBarbersTimesAvailability(idBarber: string, date: string): void {
+    this.isLoad = true;
+    this.apiService.getBarbersTimesAvailability(idBarber, date).subscribe({
+      next: (times: string[]) => (this.times = times),
+      error: (er) => console.error(er),
+      complete: () => (this.isLoad = false),
+    });
+  }
+
+  private generateDatesArray(days: number): any[] {
+    const datesArray = [];
+    const today = new Date();
+
+    for (let i = 0; i < days; i++) {
+      const currentDate = new Date(today);
+      currentDate.setDate(today.getDate() + i);
+
+      // Formatar o dia com dois dígitos
+      const day = String(currentDate.getDate()).padStart(2, '0');
+
+      datesArray.push({
+        name: currentDate.toLocaleString('pt-BR', { weekday: 'short' }),
+        day: day, // Agora o dia sempre terá dois dígitos
+        month: currentDate.getMonth() + 1,
+        year: currentDate.getFullYear(),
+      });
+    }
+
+    return datesArray;
   }
 }
