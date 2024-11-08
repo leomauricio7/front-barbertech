@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-modal-auth',
@@ -31,7 +32,7 @@ export class ModalAuthComponent implements OnInit {
   color: string = 'danger';
  public authLogin: any;
 
-  constructor(private readonly apiService: ApiService) {}
+  constructor(private readonly apiService: ApiService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.isMessage = false;
@@ -76,6 +77,8 @@ export class ModalAuthComponent implements OnInit {
         this.message = 'Usário logado com sucesso.';
         this.color = 'success';
         localStorage.setItem('user_log_barber', JSON.stringify(auth));
+
+        this.authService.setLoggedInUser(auth);
         this.isLoad = false;
       },
       error: (er) => {
@@ -168,23 +171,18 @@ export class ModalAuthComponent implements OnInit {
   }
 
   private formatPhone(phone: string): string {
-    // Remove todos os caracteres não numéricos
     const cleanedPhone = phone.replace(/\D/g, '');
-
-    // Verifica se é celular (11 dígitos) ou fixo (10 dígitos)
     if (cleanedPhone.length === 11) {
-      // Formato para celular: 84 99234-5678
       return cleanedPhone.replace(/(\d{2})(\d{5})(\d{4})/, '$1 $2-$3');
     } else if (cleanedPhone.length === 10) {
-      // Formato para fixo: 84 3234-5678
       return cleanedPhone.replace(/(\d{2})(\d{4})(\d{4})/, '$1 $2-$3');
     } else {
-      // Retorna mensagem de erro se o número não for válido
       return 'O phone deve estar no formato 84 99234-5678 ou 84 3234-5678';
     }
   }
 
   logout(){
     localStorage.removeItem('user_log_barber');
+    this.authService.setLoggedInUser(null);
   }
 }

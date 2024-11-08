@@ -11,6 +11,7 @@ import { NotfoundPage } from '../pages/notfound/notfound.page';
 import { SchedulingPage } from '../pages/scheduling/scheduling.page';
 import { SharedComponentModule } from './components.module';
 import { ApiService } from '../services/api.service';
+import { AuthService } from '../services/auth.service';
 
 @NgModule({
   declarations: [HomePage, NotfoundPage, SchedulingPage],
@@ -21,7 +22,7 @@ import { ApiService } from '../services/api.service';
     ReactiveFormsModule,
     SharedComponentModule,
   ],
-  providers: [ApiService],
+  providers: [ApiService, AuthService],
   exports: [HomePage, NotfoundPage, SchedulingPage],
 })
 export class PagesModule {}

@@ -16,6 +16,7 @@
         <span class="sr-only">Buscando seues agendamentos</span>
       </div>
     </div>
+    <p class="text-danger" *ngIf="schedulings?.length===0">Você não possui agendamentos realizados.</p>
     <ng-container *ngFor="let sc of schedulings; let i = index">
 
       <div class="col-12 barber-card" (click)="toggleCollapse(sc.id)" [attr.data-bs-target]="'#card-' + i"
