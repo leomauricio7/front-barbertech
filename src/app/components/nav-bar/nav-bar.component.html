@@ -19,11 +19,17 @@
           <a class="nav-link" routerLink="/scheduling">Meus Agendamentos</a>
         </li>
       </ul>
-      <!-- Botão para abrir o modal -->
-      <button class="btn btn-primary btn-rounded btn-icon" data-bs-toggle="modal" data-bs-target="#loginModal"
-        role="button">
-        <i class="fas fa-user"></i> {{ auth ? auth.username: 'Entrar'}}
-      </button>
+
+      <div class="dropdown">
+        <button class="btn btn-primary btn-rounded btn-icon dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user"></i> {{ auth ? auth.username: ''}}
+        </button>
+        <div class="dropdown-menu text-secondary">
+          <a *ngIf="!auth" class="dropdown-item text-dark" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"
+          role="button"> <i class="bi bi-box-arrow-in-right"></i> Entrar</a>
+          <a *ngIf="auth" class="dropdown-item text-dark" href="#" (click)="logout()"> <i class="bi bi-box-arrow-left"></i> Sair</a>
+        </div>
+      </div>
 
       <!-- Modal de login/sing-up -->
       <app-modal-auth></app-modal-auth>

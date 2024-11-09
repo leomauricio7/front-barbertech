@@ -28,4 +28,9 @@ export class NavBarComponent implements OnInit {
       }
     });
   }
+
+  logout() {
+    localStorage.removeItem('user_log_barber');
+    this.authService.setLoggedInUser(false);
+  }
 }

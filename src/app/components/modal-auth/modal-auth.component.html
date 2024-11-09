@@ -13,6 +13,14 @@
         </button>
       </div>
       <div class="modal-body" *ngIf="authLogin">
+
+        <div class="alert alert-primary" role="alert">
+          <h4 class="alert-heading">Seja bem vindo, {{authLogin.client.name}}</h4>
+          <p>Você está na aréa logada.</p>
+          <hr>
+          <p class="mb-0">Para deslogar clique no botão "sair".</p>
+        </div>
+
         <div class="text-center">
           <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-outline-danger"
             (click)="logout()">
