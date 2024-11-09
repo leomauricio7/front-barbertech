@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { debounceTime, Subject, switchMap } from 'rxjs';
 import { ICompany } from 'src/app/interfaces/company.interface';
 import { ApiService } from 'src/app/services/api.service';
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   selector: 'page-home',
@@ -12,22 +13,29 @@ export class HomePage implements OnInit {
   public isLoad: boolean = false;
   public barbers: ICompany[] = [];
   public selectedBarber: ICompany | null = null;
-  searchQuery: string = '';
-  private searchSubject: Subject<string> = new Subject<string>()
+  public searchQuery: string = '';
+  private searchSubject: Subject<string> = new Subject<string>();
 
+  constructor(
+    private readonly http: ApiService,
+    private readonly locationService: LocationService
+  ) {}
 
-  constructor(private readonly http: ApiService) {}
-
-  ngOnInit(): void {
+  async ngOnInit() {
     this.getCompanys();
 
-    this.searchSubject.pipe(
-      debounceTime(500),
-      switchMap(query => this.http.getCompanysByname(query))
-    ).subscribe(results => {
-      this.barbers = results;
-      this.isLoad = false;
-    });
+    this.searchSubject
+      .pipe(
+        debounceTime(500),
+        switchMap((query) => this.http.getCompanysByname(query))
+      )
+      .subscribe((results) => {
+        this.barbers = results;
+        this.isLoad = false;
+      });
+
+    const position: any = await this.locationService.getCurrentLocation();
+    console.log(position);
   }
 
   openModal(barber: any) {
@@ -48,7 +56,6 @@ export class HomePage implements OnInit {
     this.isLoad = true;
     this.searchSubject.next(this.searchQuery); // Emite a consulta para ser tratada
   }
-
 
   private getCompanys() {
     this.isLoad = true;
