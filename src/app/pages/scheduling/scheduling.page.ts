@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IListScheduling } from 'src/app/interfaces/scheduling.interface';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'page-scheduling',
@@ -13,16 +14,32 @@ export class SchedulingPage implements OnInit {
   public auth: any;
   collapsedStates: { [key: string]: boolean } = {};
 
-  constructor(private readonly http: ApiService) {}
+  constructor(
+    private readonly http: ApiService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    const auth = localStorage.getItem('user_log_barber');
-    if (auth) {
-      this.auth = JSON.parse(auth);
-      this.getScheduling(this.auth.id);
-      console.log(this.auth)
-    }
+    // subject de ficar ouvindos eventos
+    this.authService.loggedInUser$.subscribe((isLogged) => {
+      if (isLogged) {
+        const auth = localStorage.getItem('user_log_barber');
+        if (auth) this.auth = JSON.parse(auth);
+      } else {
+        // pega do local storage caso exista
+        const auth = localStorage.getItem('user_log_barber');
+        if (auth) {
+          this.auth = JSON.parse(auth);
+        } else {
+          this.auth = null;
+        }
+      }
+    });
 
+    // caso for login de cliente pego o ID e pucho os agendamentos
+    if(this.auth.role === 'CLIENT'){
+      this.getScheduling(this.auth.client.id)
+    }
   }
 
   toggleCollapse(id: number) {

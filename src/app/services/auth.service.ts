@@ -5,17 +5,14 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  // BehaviorSubject que mantém os dados do usuário logado
-  private loggedInUserSubject = new BehaviorSubject<any>(null);
+
+  private loggedInUserSubject = new BehaviorSubject<boolean>(false);
   public loggedInUser$ = this.loggedInUserSubject.asObservable();
 
-  // Método para atualizar os dados do usuário logado
-  setLoggedInUser(user: any) {
-    this.loggedInUserSubject.next(user);
+
+  setLoggedInUser(isLogged: boolean) {
+    this.loggedInUserSubject.next(isLogged);
   }
 
-  // Método para limpar os dados do usuário ao fazer logout
-  logout() {
-    this.loggedInUserSubject.next(null);
-  }
+
 }

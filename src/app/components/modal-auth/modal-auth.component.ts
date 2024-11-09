@@ -30,18 +30,29 @@ export class ModalAuthComponent implements OnInit {
   isMessage: boolean = false;
   message: string = '';
   color: string = 'danger';
- public authLogin: any;
+  public authLogin: any;
 
-  constructor(private readonly apiService: ApiService, private authService: AuthService) {}
+  constructor(
+    private readonly apiService: ApiService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.isMessage = false;
-
-    const auth = localStorage.getItem('user_log_barber');
-    if (auth) {
-      this.authLogin = JSON.parse(auth);
-      console.log(this.authLogin);
-    }
+    // subject de ficar ouvindos eventos
+    this.authService.loggedInUser$.subscribe((isLogged) => {
+      if (isLogged) {
+        const auth = localStorage.getItem('user_log_barber');
+        if (auth) this.authLogin = JSON.parse(auth);
+      } else {
+        // pega do local storage caso exista
+        const auth = localStorage.getItem('user_log_barber');
+        if (auth) {
+          this.authLogin = JSON.parse(auth);
+        } else {
+          this.authLogin = null;
+        }
+      }
+    });
   }
 
   isSignup(): void {
@@ -78,7 +89,7 @@ export class ModalAuthComponent implements OnInit {
         this.color = 'success';
         localStorage.setItem('user_log_barber', JSON.stringify(auth));
 
-        this.authService.setLoggedInUser(auth);
+        this.authService.setLoggedInUser(true);
         this.isLoad = false;
       },
       error: (er) => {
@@ -145,7 +156,7 @@ export class ModalAuthComponent implements OnInit {
           this.recovery = false;
         },
         error: (er) => {
-         this.isMessage = true;
+          this.isMessage = true;
           this.message = 'Senha recuperada com sucesso.';
           this.color = 'success';
           this.isLoad = false;
@@ -181,8 +192,8 @@ export class ModalAuthComponent implements OnInit {
     }
   }
 
-  logout(){
+  logout() {
     localStorage.removeItem('user_log_barber');
-    this.authService.setLoggedInUser(null);
+    this.authService.setLoggedInUser(false);
   }
 }

@@ -8,19 +8,24 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavBarComponent implements OnInit {
   public auth: any;
-  loggedInUser: any;
+
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    const auth = localStorage.getItem('user_log_barber');
-    if (auth) {
-      this.auth = JSON.parse(auth);
-      console.log(this.auth);
-    } else {
-      this.authService.loggedInUser$.subscribe((user) => {
-        this.auth = user;
-        this.loggedInUser = user;
-      });
-    }
+    // subject de ficar ouvindos eventos
+    this.authService.loggedInUser$.subscribe((isLogged) => {
+      if (isLogged) {
+        const auth = localStorage.getItem('user_log_barber');
+        if (auth) this.auth = JSON.parse(auth);
+      } else {
+        // pega do local storage caso exista
+        const auth = localStorage.getItem('user_log_barber');
+        if (auth) {
+          this.auth = JSON.parse(auth);
+        } else {
+          this.auth = null;
+        }
+      }
+    });
   }
 }

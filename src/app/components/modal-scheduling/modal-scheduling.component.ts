@@ -12,6 +12,7 @@ import { ICompany } from 'src/app/interfaces/company.interface';
 import { IScheduling } from 'src/app/interfaces/scheduling.interface';
 import { IService } from 'src/app/interfaces/service.interface';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-modal-scheduling',
@@ -40,18 +41,31 @@ export class ModalSchedulingComponent implements OnInit, OnChanges {
   private startX: number = 0;
   private scrollLeftM: number = 0;
 
-  constructor(private readonly apiService: ApiService) {}
+  constructor(
+    private readonly apiService: ApiService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     if (this.barber) {
       this.getServices(this.barber.id.toString());
     }
 
-    const auth = localStorage.getItem('user_log_barber');
-    if (auth) {
-      this.auth = JSON.parse(auth);
-      console.log(this.auth);
-    }
+    // subject de ficar ouvindos eventos
+    this.authService.loggedInUser$.subscribe((isLogged) => {
+      if (isLogged) {
+        const auth = localStorage.getItem('user_log_barber');
+        if (auth) this.auth = JSON.parse(auth);
+      } else {
+        // pega do local storage caso exista
+        const auth = localStorage.getItem('user_log_barber');
+        if (auth) {
+          this.auth = JSON.parse(auth);
+        } else {
+          this.auth = null;
+        }
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {}
@@ -67,7 +81,7 @@ export class ModalSchedulingComponent implements OnInit, OnChanges {
       const data: IScheduling = {
         id: 0,
         idBarber: this.personSelected.id,
-        idClient: this.auth.id,
+        idClient: this.auth.client.id,
         idCompany: this.barber?.id,
         idService: this.serviceSelected.id,
         date: `${this.daySelected.year}-${this.daySelected.month}-${this.daySelected.day}T${this.timeSelected}:00`,
