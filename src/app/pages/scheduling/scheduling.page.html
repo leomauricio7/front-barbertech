@@ -34,8 +34,8 @@
 
         </div>
         <div class="p-3 card-details">
-          <h6> <i class="bi bi-calendar-date"></i> {{sc.date}}</h6>
-          <h6> <i class="bi bi-clock-history"></i> {{sc.date}}</h6>
+          <h6> <i class="bi bi-calendar-date"></i> {{sc.date | date: 'dd/MM/yyyy'}}</h6>
+          <h6> <i class="bi bi-clock-history"></i> {{sc.date | date: 'hh:mm'}}</h6>
         </div>
       </div>
       <div class="collapse" [id]="'card-' + i" [class.show]="collapsedStates[sc.id]">

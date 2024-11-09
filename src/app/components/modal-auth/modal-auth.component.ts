@@ -188,7 +188,8 @@ export class ModalAuthComponent implements OnInit {
     } else if (cleanedPhone.length === 10) {
       return cleanedPhone.replace(/(\d{2})(\d{4})(\d{4})/, '$1 $2-$3');
     } else {
-      return 'O phone deve estar no formato 84 99234-5678 ou 84 3234-5678';
+      return '';
+      //return 'O phone deve estar no formato 84 99234-5678 ou 84 3234-5678';
     }
   }
 
