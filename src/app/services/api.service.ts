@@ -49,9 +49,19 @@ export class ApiService {
     return this.http.get<ICompany[]>(`${this.uri}/company/search?name=${name}`);
   }
 
-  getScheduling(idClient: string): Observable<IListScheduling[]> {
+  getScheduling(
+    idClient: string,
+    sort: string,
+    direction: string
+  ): Observable<IListScheduling[]> {
     return this.http.get<IListScheduling[]>(
-      `${this.uri}/scheduling/client/${idClient}`
+      `${this.uri}/scheduling/client/${idClient}`,
+      {
+        params: {
+          sort,
+          direction,
+        },
+      }
     );
   }
 

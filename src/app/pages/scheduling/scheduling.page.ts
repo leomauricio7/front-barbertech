@@ -14,6 +14,9 @@ export class SchedulingPage implements OnInit {
   public auth: any;
   collapsedStates: { [key: string]: boolean } = {};
 
+  sort: string = 'date'
+  direction: string = 'DESC'
+
   constructor(
     private readonly http: ApiService,
     private authService: AuthService
@@ -48,7 +51,7 @@ export class SchedulingPage implements OnInit {
 
   private getScheduling(idClient: string) {
     this.isLoad = true;
-    this.http.getScheduling(idClient).subscribe({
+    this.http.getScheduling(idClient, this.sort, this.direction).subscribe({
       next: (response: IListScheduling[]) => {
         this.schedulings = response;
         this.schedulings.forEach((scheduling) => {
@@ -58,5 +61,14 @@ export class SchedulingPage implements OnInit {
       error: (er) => console.error(er),
       complete: () => (this.isLoad = false),
     });
+  }
+
+  onOptionSelected(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.sort = selectElement.value;
+    console.log('Opção selecionada:', this.sort);
+
+    // Chame o método que aplica a ordenação usando o valor selecionado
+    this.getScheduling(this.auth.client.id);
   }
 }

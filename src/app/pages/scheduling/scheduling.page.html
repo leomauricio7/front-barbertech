@@ -1,9 +1,9 @@
 <div class="container mt-4 filter">
   <h5>Meus Agendamentos</h5>
 
-  <select class="form-select" aria-label="Filtrar por:">
+  <select class="form-select" aria-label="Filtrar por:" (change)="onOptionSelected($event)">
     <option selected>Ordenar por:</option>
-    <option value="name">Nome</option>
+    <option value="company.name">Nome</option>
     <option value="date">Data</option>
   </select>
 </div>
