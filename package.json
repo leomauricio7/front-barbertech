@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve --watch",
     "build": "ng build",
-    "build:github": "ng build --configuration=production --base-href 'https://leomauricio7.github.io/front-barbertech/'",
+    "build:github": "ng build --configuration=production --base-href=/front-barbertech/",
     "deploy:github": "ngh --dir dist/barbertech",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
